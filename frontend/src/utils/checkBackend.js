@@ -1,7 +1,7 @@
 export async function checkBackend() {
     try {
       const res = await fetch(
-        "https://YOUR-BACKEND.onrender.com/health"
+        "https://stylo-ecommerce-1.onrender.com/health"
       );
       return res.ok;
     } catch (err) {
