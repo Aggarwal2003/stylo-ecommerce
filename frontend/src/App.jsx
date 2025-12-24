@@ -25,9 +25,34 @@ import Addresses from './pages/Addresses'
 import FAQs from './pages/FAQs'
 import Wishlist from './pages/Wishlist'
 
+import { useEffect, useState } from "react";
+import { checkBackend } from "./utils/checkBackend";
+
 const App = () => {
+
+  // 🔹 NEW: state to control message
+  const [showBackendMsg, setShowBackendMsg] = useState(true);
+
+  // 🔹 NEW: check backend when app loads
+  useEffect(() => {
+    async function check() {
+      const ok = await checkBackend();
+      if (ok) {
+        setShowBackendMsg(false);
+      }
+    }
+    check();
+  }, []);
+
   return (
     <>
+      {/* 🔔 Backend wake-up notification */}
+      {showBackendMsg && (
+        <div className="bg-yellow-100 text-yellow-800 text-center py-2 text-sm">
+          Backend server is waking up. Please wait a few seconds…
+        </div>
+      )}
+
       {/* Toast should be global */}
       <ToastContainer />
 
@@ -50,15 +75,15 @@ const App = () => {
           <Route path='/place-order' element={<PlaceOrder />} />
           <Route path='/orders' element={<Orders />} />
           <Route path='/verify' element={<Verify />} />
-          <Route path="/support" element={<Support/>} />
-          <Route path="/track-order" element={<TrackOrder/>}/>
-          <Route path="/returns" element={<Returns/>}/>
-          <Route path="/shipping" element={<Shipping/>}/>
+          <Route path="/support" element={<Support />} />
+          <Route path="/track-order" element={<TrackOrder />} />
+          <Route path="/returns" element={<Returns />} />
+          <Route path="/shipping" element={<Shipping />} />
           <Route path="/account-help" element={<AccountHelp />} />
-          <Route path='/myProfile' element={<Profile/>}/>
-          <Route path='/addresses' element={<Addresses/>}></Route>
-          <Route path='/faqs' element={<FAQs/>}></Route>
-          <Route path='/wishlist' element={<Wishlist/>}></Route>
+          <Route path='/myProfile' element={<Profile />} />
+          <Route path='/addresses' element={<Addresses />} />
+          <Route path='/faqs' element={<FAQs />} />
+          <Route path='/wishlist' element={<Wishlist />} />
         </Routes>
 
         <Footer />
