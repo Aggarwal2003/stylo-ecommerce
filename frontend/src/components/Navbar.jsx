@@ -88,6 +88,16 @@ const Navbar = () => {
                 >
                   Orders
                 </p>
+                          {/* ✅ Admin Login (external site) */}
+                <p
+                  onClick={() =>
+                    window.open(
+                      "https://stylo-clothify-admin.vercel.app",
+                      "_blank"
+                    )
+                  }
+                  className="px-4 py-2 text-sm cursor-pointer hover:bg-gray-100"
+                >Admin</p>
                 <p
                   onClick={logout}
                   className="px-4 py-2 text-sm cursor-pointer hover:bg-gray-100"
