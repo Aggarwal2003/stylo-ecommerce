@@ -4,6 +4,7 @@ import Title from "../components/Title";
 import { assets } from "../assets/assets";
 import CartTotal from "../components/CartTotal";
 import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Cart = () => {
   const {
@@ -12,6 +13,7 @@ const Cart = () => {
     cartItems,
     updateQuantity,
     navigate,
+    token,              // ✅ get token
   } = useContext(ShopContext);
 
   const [cartData, setCartData] = useState([]);
@@ -33,6 +35,17 @@ const Cart = () => {
       setCartData(tempData);
     }
   }, [cartItems, products]);
+
+  /* ✅ CHECKOUT HANDLER (LOGIN GUARD) */
+  const handleCheckout = () => {
+    if (!token) {
+      toast.error("Please login first to proceed to checkout");
+      navigate("/login");
+      return;
+    }
+
+    navigate("/place-order");
+  };
 
   return (
     <div className="border-t pt-14">
@@ -71,14 +84,12 @@ const Cart = () => {
                   key={`${item._id}-${item.size}`}
                   className="flex flex-col sm:flex-row gap-4 sm:gap-6 p-4 sm:p-6 border rounded-xl bg-white shadow-sm"
                 >
-                  {/* Image */}
                   <img
                     className="w-24 sm:w-28 rounded-md object-cover"
                     src={productData.image[0]}
                     alt={productData.name}
                   />
 
-                  {/* Info */}
                   <div className="flex-1 flex flex-col justify-between">
                     <div>
                       <p className="text-base sm:text-lg font-medium text-gray-800">
@@ -96,13 +107,9 @@ const Cart = () => {
                       </div>
                     </div>
 
-                    {/* Actions */}
                     <div className="flex items-center justify-between mt-4">
-                      {/* Quantity */}
                       <div className="flex items-center gap-2">
-                        <span className="text-sm text-gray-500">
-                          Qty
-                        </span>
+                        <span className="text-sm text-gray-500">Qty</span>
                         <input
                           type="number"
                           min={1}
@@ -121,7 +128,6 @@ const Cart = () => {
                         />
                       </div>
 
-                      {/* Remove */}
                       <button
                         onClick={() =>
                           updateQuantity(item._id, item.size, 0)
@@ -148,7 +154,7 @@ const Cart = () => {
               <CartTotal />
               <div className="w-full text-end">
                 <button
-                  onClick={() => navigate("/place-order")}
+                  onClick={handleCheckout}
                   className="bg-black text-white text-sm my-8 px-8 py-3 rounded hover:bg-gray-800 transition"
                 >
                   PROCEED TO CHECKOUT
